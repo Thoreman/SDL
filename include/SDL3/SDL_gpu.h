@@ -2882,6 +2882,10 @@ extern SDL_DECLSPEC SDL_GPUGraphicsPipeline * SDLCALL SDL_CreateGPUGraphicsPipel
     const SDL_GPUGraphicsPipelineCreateInfo *createinfo);
 
 #define SDL_PROP_GPU_GRAPHICSPIPELINE_CREATE_NAME_STRING "SDL.gpu.graphicspipeline.create.name"
+/* Vulkan only: create the pipeline against a render pass that has a fragment
+ * density map attachment, for use in passes whose colour target 0 has one
+ * (see SDL_PROP_GPU_TEXTURE_CREATE_VULKAN_FDM_ATTACH_POINTER). */
+#define SDL_PROP_GPU_GRAPHICSPIPELINE_CREATE_VULKAN_FDM_BOOLEAN "SDL.gpu.graphicspipeline.create.vulkan.fdm"
 
 /**
  * Creates a sampler object to be used when binding textures in a graphics
@@ -3175,6 +3179,23 @@ extern SDL_DECLSPEC SDL_GPUTexture * SDLCALL SDL_CreateGPUTexture(
 #define SDL_PROP_GPU_TEXTURE_CREATE_D3D12_CLEAR_DEPTH_FLOAT     "SDL.gpu.texture.create.d3d12.clear.depth"
 #define SDL_PROP_GPU_TEXTURE_CREATE_D3D12_CLEAR_STENCIL_NUMBER  "SDL.gpu.texture.create.d3d12.clear.stencil"
 #define SDL_PROP_GPU_TEXTURE_CREATE_NAME_STRING                 "SDL.gpu.texture.create.name"
+
+/* Vulkan only (VK_EXT_fragment_density_map), ignored elsewhere. A texture
+ * created with ..._VULKAN_FDM_BOOLEAN is a fragment density map for colour
+ * targets of the given width and height: full density inside inner_radius
+ * of the centre (normalised texture coordinates), falling linearly to
+ * min_density at outer_radius. Filled once at creation; never sampled or
+ * written by the application. A colour-target texture created with
+ * ..._VULKAN_FDM_ATTACH_POINTER set to such a texture gets it attached to
+ * every render pass in which it is colour target 0. Release the colour
+ * target before its density map. */
+#define SDL_PROP_GPU_TEXTURE_CREATE_VULKAN_FDM_BOOLEAN              "SDL.gpu.texture.create.vulkan.fdm"
+#define SDL_PROP_GPU_TEXTURE_CREATE_VULKAN_FDM_CENTER_X_FLOAT       "SDL.gpu.texture.create.vulkan.fdm.center_x"
+#define SDL_PROP_GPU_TEXTURE_CREATE_VULKAN_FDM_CENTER_Y_FLOAT       "SDL.gpu.texture.create.vulkan.fdm.center_y"
+#define SDL_PROP_GPU_TEXTURE_CREATE_VULKAN_FDM_INNER_RADIUS_FLOAT   "SDL.gpu.texture.create.vulkan.fdm.inner_radius"
+#define SDL_PROP_GPU_TEXTURE_CREATE_VULKAN_FDM_OUTER_RADIUS_FLOAT   "SDL.gpu.texture.create.vulkan.fdm.outer_radius"
+#define SDL_PROP_GPU_TEXTURE_CREATE_VULKAN_FDM_MIN_DENSITY_FLOAT    "SDL.gpu.texture.create.vulkan.fdm.min_density"
+#define SDL_PROP_GPU_TEXTURE_CREATE_VULKAN_FDM_ATTACH_POINTER       "SDL.gpu.texture.create.vulkan.fdm.attach"
 
 /**
  * Creates a buffer object to be used in graphics or compute workflows.
